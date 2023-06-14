@@ -5,7 +5,7 @@ const Faker = require('faker/lib');
 describe('Funcionalidade pré cadastro', () => {
 
     beforeEach(() => {
-        cy.visit('minha-conta/')    
+        cy.visit('minha-conta/')
     });
 
     it('Deve completar o pré cadastro com sucesso', () => {
@@ -23,7 +23,15 @@ describe('Funcionalidade pré cadastro', () => {
         cy.get('#account_last_name').type(lastNameFaker)
         cy.get('.woocommerce-Button').click()
 
-        cy.get('.woocommerce-message').should('contain','Detalhes da conta modificados com sucesso.')
+        cy.get('.woocommerce-message').should('contain', 'Detalhes da conta modificados com sucesso.')
+
+
     });
-    
+    it.only('Deve completar o pre cadastro com sucesso usando comandos customizados', () => {
+        let firstNameFaker = faker.name.firstName()
+        let lastNameFaker = faker.name.lastName()
+        let emailFaker = faker.internet.email(firstNameFaker, lastNameFaker)
+        cy.preCadastro(emailFaker, 'teste@teste.com', firstNameFaker, lastNameFaker)
+        cy.get('.woocommerce-message').should('contain', 'Detalhes da conta modificados com sucesso.')
+    });
 });
